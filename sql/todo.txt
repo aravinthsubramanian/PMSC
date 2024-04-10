@@ -1,5 +1,6 @@
-cd PMSC
+composer create-project laravel/laravel:^10.0 PMSC
 
+cd PMSC
 
 1=====================================
 composer install
