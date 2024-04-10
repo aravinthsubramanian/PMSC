@@ -79,6 +79,15 @@ DB_DATABASE=pmsc  //database name
 DB_USERNAME=root
 DB_PASSWORD=
 
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_USERNAME=ambiworldisinfinite@gmail.com
+MAIL_PASSWORD=dvvdohgakqevegxq
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS="ambiworldisinfinite@gmail.com"
+MAIL_FROM_NAME="PMS"
+
 15====================================================================
 php artisan optimize 
     (or) 
