@@ -169,12 +169,23 @@ class AdminController extends Controller
         $request->validate([
             'email' => 'required|email:rfc,dns|max:64|exists:admins,email',
         ]);
+
+        $results = DB::table('password_reset_tokens')->where('email', $request->email)->orderBy('id', 'desc')->first();
+
+        $td = number_format(date('i', strtotime(Carbon::now()->toDateTimeString()) - strtotime($results->created_at)));
+        if (!empty($results)) {
+            if ($td < 5)
+                return back()->with("error", "So many attempts try again later...");
+        }
+        DB::table('password_reset_tokens')->where([['email', $request->email]])->delete();
         $token = Str::random(64);
         Mail::send("email.adminemail", ['token' => $token, 'email' => $request->email], function ($message) use ($request) {
             $message->to($request->email);
             $message->subject("Reset password");
         });
+        
         DB::table('password_reset_tokens')->insert(['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]);
+        
         return back()->with("success", "Email send successfully");
     }
 
@@ -197,7 +208,8 @@ class AdminController extends Controller
             'npassword' => ['required', Password::min(6)->max(18)->mixedCase()->numbers()->symbols()],
             'cpassword' => ['required', Password::min(6)->max(18)->mixedCase()->numbers()->symbols(), 'same:npassword'],
         ]);
-        $updatepassword = DB::table('password_reset_tokens')->where([['email', $request->email], ['token', $request->token]])->first();
+        $updatepassword = DB::table('password_reset_tokens')->where([['email', $request->email], ['token', $request->token]])->orderBy('id', 'desc')->first();
+        
         if (!$updatepassword) {
             return redirect()->to(route('users.resetpassword'))->with("error", "email not valid....");
         }
