@@ -25,19 +25,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
-Route::post('login', [CommonController::class, 'login'])->name('common.login');
-
-
-Route::post('admins/login', [AdminController::class, 'login'])->name('admins.login');
-Route::post('admins/sendmail', [AdminController::class, 'sendmail'])->name('admins.sendmail');
-Route::get('admins/forgotpassword', [AdminController::class, 'forgotpassword'])->name('admins.forgotpassword');
-Route::post('admins/updatepassword', [AdminController::class, 'updatepassword'])->name('admins.updatepassword');
-Route::get('admins/resetpassword/{token}', [AdminController::class, 'resetpassword'])->name('admins.resetpassword');
-Route::get('admins/loginoption', [AdminController::class, 'loginoption'])->name('admins.loginoption')->middleware(LoginCheck::class);
-
+Route::get('/', [UserController::class, 'loginoption'])->name('users.loginoption')->middleware(LoginCheck::class);
 
 Route::post('users/login', [UserController::class, 'login'])->name('users.login');
 Route::post('users/sendmail', [UserController::class, 'sendmail'])->name('users.sendmail');
@@ -48,14 +36,23 @@ Route::post('users/updatepassword', [UserController::class, 'updatepassword'])->
 Route::get('users/resetpassword/{token}', [UserController::class, 'resetpassword'])->name('users.resetpassword');
 Route::get('users/loginoption', [UserController::class, 'loginoption'])->name('users.loginoption')->middleware(LoginCheck::class);
 
-
 Route::middleware([UserAuth::class])->group(function () {
     Route::get('users/product', [UserController::class, 'products'])->name('users.product');
+    Route::post('users/filterproduct', [UserController::class, 'filerproducts'])->name('users.filterproduct');
     Route::get('users/logout', [UserController::class, 'logout'])->name('users.logout');
     Route::get('users/dashboard', [UserController::class, 'dashboard'])->name('users.dashboard');
     Route::resource('users', UserController::class);
 });
 
+
+Route::post('admins/login', [AdminController::class, 'login'])->name('admins.login');
+Route::post('admins/sendmail', [AdminController::class, 'sendmail'])->name('admins.sendmail');
+Route::get('admins/forgotpassword', [AdminController::class, 'forgotpassword'])->name('admins.forgotpassword');
+Route::post('admins/updatepassword', [AdminController::class, 'updatepassword'])->name('admins.updatepassword');
+Route::get('admins/resetpassword/{token}', [AdminController::class, 'resetpassword'])->name('admins.resetpassword');
+Route::get('admins/loginoption', [AdminController::class, 'loginoption'])->name('admins.loginoption')->middleware(LoginCheck::class);
+
+Route::get('api/categories/{id}', [SubcategoryController::class, 'getSubcategories']);
 
 Route::middleware([AdminAuth::class])->group(function () {
 
@@ -93,7 +90,7 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::resource('categories', CategoryController::class);
     
     Route::post('subcategories/fetch', [SubcategoryController::class, 'fetch'])->name('subcategories.fetch');
-    Route::get('api/categories/{id}', [SubcategoryController::class, 'getSubcategories']);
+    
     Route::resource('subcategories', SubcategoryController::class);
 
     Route::post('products/fetch', [ProductController::class, 'fetch'])->name('products.fetch');

@@ -18,7 +18,7 @@ class SubcategoryController extends Controller
     {
         $this->middleware(['permission:SUBCATEGORY_READ'], ['only' => ['index', 'show']]);
         $this->middleware(['permission:SUBCATEGORY_CREATE'], ['only' => ['create', 'store']]);
-        $this->middleware(['permission:SUBCATEGORY_UPDATE'], ['only' => ['edit', 'update', 'getSubcategories']]);
+        $this->middleware(['permission:SUBCATEGORY_UPDATE'], ['only' => ['edit', 'update']]);
         $this->middleware(['permission:SUBCATEGORY_DELETE'], ['only' => ['destroy']]);
     }
 

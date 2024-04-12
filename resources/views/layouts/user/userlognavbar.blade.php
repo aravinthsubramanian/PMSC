@@ -71,8 +71,8 @@
                     <a href="#"><i class="feather-bell"></i></a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link header-login" href="{{route('users.loginoption')}}">
-                        <i class="feather-users me-2"></i> Login
+                    <a class="nav-link header-login" href="{{route('admins.loginoption')}}">
+                        <i class="feather-user me-2"></i> Admin
                     </a>
                 </li>
             </ul>

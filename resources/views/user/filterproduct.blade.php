@@ -56,10 +56,9 @@
                                 <div class="form-group">
                                     <label>Select Category </label>
                                     <select class="form-control" id="categorySelect" name="category">
-                                        <option value=""></option>
                                         @foreach ($categories as $category)
                                             @foreach ($category->subcategories as $subcategory)
-                                                <option value="{{ $category->id }}">{{ $category->category }}</option>
+                                                <option value="{{ $category->id }}" @selected($oldcat->id == $category->id)>{{ $category->category }}</option>
                                             @break
                                         @endforeach
                                     @endforeach
@@ -69,6 +68,9 @@
                                 <div class="form-group">
                                     <label>Select Subcategory </label>
                                     <select class="form-control" id="subcategorySelect" name="subcategory">
+                                        @foreach ($subs as $subcat)
+                                            <option value="{{$subcat->id}}" @selected($oldsubcat->id == $subcat->id)>{{$subcat->subcategory}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 

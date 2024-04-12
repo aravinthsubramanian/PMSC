@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('cost');
             $table->string('status')->nullable();
-            $table->bigInteger('category')->unsigned();
-            $table->foreign('category')->references('id')->on('main_categories');
+            $table->bigInteger('main_category_id')->unsigned();
+            $table->foreign('main_category_id')->references('id')->on('main_categories');
             $table->bigInteger('sub_category_id')->unsigned();
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
             $table->timestamps();

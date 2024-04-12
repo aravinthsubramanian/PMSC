@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MainCategory;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -27,6 +28,37 @@ class UserController extends Controller
         $this->middleware(['permission:USER_UPDATE'], ['only' => ['edit', 'update']]);
         $this->middleware(['permission:USER_DELETE'], ['only' => ['destroy']]);
     }
+
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function filerproducts(Request $request)
+    {
+        if($request->search){
+            if(!$request->category | !$request->subcategory) {
+                $products = Product::where('product', 'like', "%$request->search%")->get();
+                $categories = MainCategory::with('subcategories')->get();
+                return view('user.product', compact('products','categories'));
+            }
+            $products = Product::where([['product', 'like', "%$request->search%"],['main_category_id',$request->category],['sub_category_id',$request->subcategory]])->get();
+            $categories = MainCategory::with('subcategories')->get();
+            return view('user.product', compact('products','categories'));
+        }
+        
+        if($request->category && $request->subcategory) {
+            $products = Product::where([['main_category_id',$request->category],['sub_category_id',$request->subcategory]])->get();
+            $categories = MainCategory::with('subcategories')->get();
+            // $oldcat = MainCategory::find($request->category);
+            // $oldsubcat = SubCategory::find($request->subcategory);
+            // $subs = SubCategory::with('products')->where('main_category_id',$request->category)->get();
+            // return view('user.filterproduct', compact('products','categories','oldcat','oldsubcat','subs'));
+            return view('user.product', compact('products','categories'));
+        }
+
+        return redirect(route('users.product'));
+    }
+
 
     /**
      * Display a listing of the resource.
