@@ -202,10 +202,16 @@ class ProductController extends Controller
         foreach ($all as $img) {
             $dbimg[$i++] = $img->id;
         }
-        $oldimg = $request->oldimg;
-        $deleted = array_diff($dbimg, $oldimg);
-        foreach ($deleted as $id) {
-            $result = ProductImage::where('id', $id);
+        if($request->oldimg){
+            $oldimg = $request->oldimg;
+            $deleted = array_diff($dbimg, $oldimg);
+            foreach ($deleted as $id) {
+                $result = ProductImage::where('id', $id);
+                // dd($result);
+                $result->delete();
+            }
+        }else{
+            $result = ProductImage::where('id', $product->id);
             // dd($result);
             $result->delete();
         }
