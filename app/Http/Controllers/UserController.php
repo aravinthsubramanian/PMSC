@@ -66,7 +66,8 @@ class UserController extends Controller
     public function products()
     {
         $products = Product::all();
-        return view('user.product', compact('products'));
+        $categories = MainCategory::with('subcategories')->get();
+        return view('user.product', compact('products','categories'));
     }
 
     /**
