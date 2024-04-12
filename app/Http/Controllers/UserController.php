@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MainCategory;
 use App\Models\Product;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
@@ -16,19 +17,6 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    function __construct()
-    {
-        $this->middleware(['permission:USER_READ'], ['only' => ['index', 'show']]);
-        $this->middleware(['permission:USER_CREATE'], ['only' => ['create', 'store']]);
-        $this->middleware(['permission:USER_UPDATE'], ['only' => ['edit', 'update']]);
-        $this->middleware(['permission:USER_DELETE'], ['only' => ['destroy']]);
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -36,8 +24,13 @@ class UserController extends Controller
     public function filerproducts(Request $request)
     {
         if($request->search){
-            if(!$request->category | !$request->subcategory) {
+            if(!$request->category && !$request->subcategory) {
                 $products = Product::where('product', 'like', "%$request->search%")->get();
+                $categories = MainCategory::with('subcategories')->get();
+                return view('user.product', compact('products','categories'));
+            }
+            if(!$request->subcategory) {
+                $products = Product::where([['product', 'like', "%$request->search%"],['main_category_id',$request->category]])->get();
                 $categories = MainCategory::with('subcategories')->get();
                 return view('user.product', compact('products','categories'));
             }
@@ -55,10 +48,14 @@ class UserController extends Controller
             // return view('user.filterproduct', compact('products','categories','oldcat','oldsubcat','subs'));
             return view('user.product', compact('products','categories'));
         }
+        if($request->category) {
+            $products = Product::where('main_category_id',$request->category)->get();
+            $categories = MainCategory::with('subcategories')->get();
+            return view('user.product', compact('products','categories'));
+        }
 
         return redirect(route('users.product'));
     }
-
 
     /**
      * Display a listing of the resource.
@@ -193,93 +190,6 @@ class UserController extends Controller
     public function dashboard()
     {
         return view('user.dashboard');
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $users = User::all();
-        return view('user.view', compact('users'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('user.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'status' => 'required',
-            'name' => 'required|min:2|max:32|regex:/^[a-zA-Z .]+$/',
-            'email' => 'required|email:rfc,dns|max:64|unique:admins,email',
-            'mobile' => 'required|digits:10',
-            'npassword' => ['required', Password::min(6)->max(18)->mixedCase()->numbers()->symbols()],
-            'cpassword' => ['required', Password::min(6)->max(18)->mixedCase()->numbers()->symbols(), 'same:npassword'],
-        ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'status' => $request->status,
-            'password' => Hash::make($request->npassword)
-        ]);
-
-        return redirect()->route('users.index')->with('success', 'User created successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $user = User::find($id);
-        return view('user.edit', compact('user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'status' => 'required',
-            'name' => 'required|min:2|max:32|regex:/^[a-zA-Z .]+$/',
-            'mobile' => 'required|digits:10',
-        ]);
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->mobile = $request->mobile;
-        $user->status = $request->status;
-        $user->update();
-
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $user = User::find($id);
-        $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 
     /**

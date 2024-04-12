@@ -430,7 +430,7 @@ class AdminController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->to(route('admins.loginoption'))->with('success', 'logout successfully!');
+        return redirect()->to(route('users.loginoption'))->with('success', 'logout successfully!');
     }
 
      /**

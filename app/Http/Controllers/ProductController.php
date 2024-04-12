@@ -215,7 +215,7 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->cost = $request->cost;
         $product->status = $request->product_status;
-        $product->category = $request->category;
+        $product->main_category_id = $request->category;
         $product->sub_category_id = $request->subcategory;
         $product->update();
 
