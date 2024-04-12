@@ -2,32 +2,46 @@ composer create-project laravel/laravel:^10.0 PMSC
 
 cd PMSC
 
-1=====================================
+1=========================================================================================
+copy from all files to your project folder like:
+-->app
+-->database/migrations
+-->database/seeders
+-->public/assets
+-->resources/views
+-->routes/web
+
+2========================================================================================
+comment this line from config/app.php file:
+
+line 59 // 'asset_url' => env('ASSET_URL', '/'),
+
+3========================================================================================
 composer install
 
-2======================================
+4=======================================================================================
 cp .env.example .env  ((copy [.env.example] content to [.env]))
 
-3======================================
+5=========================================================================================
 php artisan key:generate
 
-4=======================================
+6=========================================================================================
 php artisan storage:link
 
-5======================================================
+7======================================================-===================================
 composer require spatie/laravel-permission
 
-6==================================================================================
+8=============================================================================================
 service provider manually add config/app.php file:
 'providers' => [
     // ...
     Spatie\Permission\PermissionServiceProvider::class,
 ];
 
-7=========================================================================================
+9================================================================================================
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 
-8======================================================================================================
+10======================================================================================================
 Add below content to app/Http/Kernel.php file:
 
 protected $middlewareAliases = [
@@ -38,7 +52,7 @@ protected $middlewareAliases = [
     'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
 ];
 
-9========================================================================================================
+11=======================================================================================================================
 Update changes vendor\spatie\laravel-permission\src\Middleware\PermissionMiddleware.php file:
 
 public function handle($request, Closure $next, $permission, $guard = 'admin')  // Instead of "null" change "admin"
@@ -50,10 +64,10 @@ public static function using($permission, $guard = 'admin') // Instead of "null"
     ...
 }
 
-10====================================================================================
+12=========================================================================================================================
 composer require tymon/jwt-auth
 
-11================================================================================
+13======================================================================================================================
 Add the service provider to config/app.php config file:
 'providers' => [
     ...
@@ -61,21 +75,21 @@ Add the service provider to config/app.php config file:
     Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 ]
 
-12=================================================================================================
+14===================================================================================================================
 php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
 
-13===========================================================================================================
+15================================================================================================================
 php artisan jwt:secret
 
 (jwt-auth secret [ki85FHwQv4uXFmvhH4VhvSEzOrXs5nCX4d6iuqmaD8qWlotxYI5eGOFe7jRAT95L] set successfully.)
 
-14==============================================================
+16==========================================================================================================
 mysql config in .ENV file:
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=pmsc  //database name
+DB_DATABASE=pmsc
 DB_USERNAME=root
 DB_PASSWORD=
 
@@ -88,16 +102,16 @@ MAIL_ENCRYPTION=ssl
 MAIL_FROM_ADDRESS="ambiworldisinfinite@gmail.com"
 MAIL_FROM_NAME="PMS"
 
-15====================================================================
+17============================================================================================================
 php artisan optimize 
     (or) 
 php artisan config:clear
 
-16=======================================================
+18=======================================================
 php artisan migrate
 
-17===================================================
+19===================================================
 php artisan db:seed
 
-18============================================
+20============================================
 php artisan serve

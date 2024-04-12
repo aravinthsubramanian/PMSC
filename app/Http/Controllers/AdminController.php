@@ -31,7 +31,11 @@ class AdminController extends Controller
         $this->middleware(['permission:ADMIN_CREATE'], ['only' => ['create', 'store']]);
         $this->middleware(['permission:ADMIN_UPDATE'], ['only' => ['edit', 'update']]);
         $this->middleware(['permission:ADMIN_DELETE'], ['only' => ['destroy']]);
+        
         $this->middleware(['permission:USER_READ'], ['only' => ['users', 'userfetch']]);
+        $this->middleware(['permission:USER_CREATE'], ['only' => ['usercreate', 'userstore']]);
+        $this->middleware(['permission:USER_UPDATE'], ['only' => ['useredit', 'userupdate']]);
+        $this->middleware(['permission:USER_DELETE'], ['only' => ['userdestroy']]);
     }
 
 
@@ -427,5 +431,75 @@ class AdminController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->to(route('admins.loginoption'))->with('success', 'logout successfully!');
+    }
+
+     /**
+     * Show the form for creating a new resource.
+     */
+    public function usercreate()
+    {
+        return view('user.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function userstore(Request $request)
+    {
+        $request->validate([
+            'status' => 'required',
+            'name' => 'required|min:2|max:32|regex:/^[a-zA-Z .]+$/',
+            'email' => 'required|email:rfc,dns|max:64|unique:admins,email',
+            'mobile' => 'required|digits:10',
+            'npassword' => ['required', Password::min(6)->max(18)->mixedCase()->numbers()->symbols()],
+            'cpassword' => ['required', Password::min(6)->max(18)->mixedCase()->numbers()->symbols(), 'same:npassword'],
+        ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'status' => $request->status,
+            'password' => Hash::make($request->npassword)
+        ]);
+
+        return redirect()->route('admins.users')->with('success', 'User created successfully');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function useredit(string $id)
+    {
+        $user = User::find($id);
+        return view('user.edit', compact('user'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function userupdate(Request $request, string $id)
+    {
+        $request->validate([
+            'status' => 'required',
+            'name' => 'required|min:2|max:32|regex:/^[a-zA-Z .]+$/',
+            'mobile' => 'required|digits:10',
+        ]);
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->mobile = $request->mobile;
+        $user->status = $request->status;
+        $user->update();
+
+        return redirect()->route('admins.users')->with('success', 'User updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function userdestroy(string $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('admins.users')->with('success', 'User deleted successfully');
     }
 }

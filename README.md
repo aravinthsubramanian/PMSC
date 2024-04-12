@@ -1,66 +1,149 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+### Download & install XAMPP Application from follwing link address:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.12/xampp-windows-x64-8.2.12-0-VS16-installer.exe
 
-## About Laravel
+### After install XAMPP open it then start Apache and MySQL servers:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Goto C:\xampp\htdocs folder:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Open C:\xampp\htdocs folder in VsCode Application
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Create project with Laravel^10:
 
-## Learning Laravel
+composer create-project laravel/laravel:^10.0 PMSC
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+--> choose database as MySql
+--> remaining config as default
+--> Don't run initial migration
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Goto project folder:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+cd PMSC
 
-## Laravel Sponsors
+### Copy from all files (if you downloaded from git) into your project folders like:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Otherwise download or clone from https://github.com/aravinthsubramanian/PMSC.git
 
-### Premium Partners
+--> app
+--> database/migrations
+--> database/seeders
+--> public/user
+--> public/admin
+--> resources/views
+--> routes/web
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Comment this line from config/app.php file:
 
-## Contributing
+line 59 // 'asset_url' => env('ASSET_URL', '/'),
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Install composer:
 
-## Code of Conduct
+composer install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Modify the .env file:
 
-## Security Vulnerabilities
+cp .env.example .env  ((copy [.env.example] content to [.env]))
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Genereate your own artisan key:
 
-## License
+php artisan key:generate
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Link storage folder to public:
+
+php artisan storage:link
+
+### Install spatie:
+
+composer require spatie/laravel-permission
+
+### Add service provider manually in config/app.php file:
+
+'providers' => [
+    ...
+
+    Spatie\Permission\PermissionServiceProvider::class,
+];
+
+### Publish spartie provider globaly:
+
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+### Add below content to app/Http/Kernel.php file:
+
+protected $middlewareAliases = [
+    ...
+
+    'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+    'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+];
+
+### Update in vendor\spatie\laravel-permission\src\Middleware\PermissionMiddleware.php file:
+
+public function handle($request, Closure $next, $permission, $guard = 'admin')  // Instead of "null" change "admin"
+{
+    ...
+}
+public static function using($permission, $guard = 'admin') // Instead of "null" change "admin"
+{
+    ...
+}
+
+### Install JWT for your project:
+
+composer require tymon/jwt-auth
+
+### Add the service provider to config/app.php config file:
+
+'providers' => [
+    ...
+
+    Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+]
+
+### Publish JWT provider globaly:
+
+php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+
+### Generate default Jwt Token:
+
+php artisan jwt:secret
+
+output like below......
+(jwt-auth secret [ki85FHwQv4uXFmvhH4VhvSEzOrXs5nCX4d6iuqmaD8qWlotxYI5eGOFe7jRAT95L] set successfully.)
+
+### Mysql config in .env file:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=pmsc
+DB_USERNAME=root
+DB_PASSWORD=
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com #(if using gmail)
+MAIL_PORT=465
+MAIL_USERNAME= your@gmail.com #(email)
+MAIL_PASSWORD= your gmail password #(password)
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS= "your@gmail.com" #(same email)
+MAIL_FROM_NAME="PMSC"
+
+### Clear the cache:
+
+php artisan optimize 
+    (or) 
+php artisan config:clear
+
+### Create database for your project:
+
+php artisan migrate
+
+### Insert permissions into database:
+
+php artisan db:seed
+
+### Start your project:
+
+php artisan serve

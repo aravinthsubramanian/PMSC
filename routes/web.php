@@ -73,6 +73,14 @@ Route::middleware([AdminAuth::class])->group(function () {
     Route::get('admins/mypassword/{id}', [AdminController::class, 'mypassword'])->name('admins.mypassword');
     Route::post('admins/updatepass/{id}', [AdminController::class, 'updatepass'])->name('admins.updatepass');
 
+    Route::get('user/create', [AdminController::class,'usercreate'])->name('user.create');
+    Route::post('user/store', [AdminController::class,'userstore'])->name('user.store');
+
+    Route::get('user/{id}/edit', [AdminController::class,'useredit'])->name('user.edit');
+    Route::patch('user/{id}', [AdminController::class,'userupdate'])->name('user.update');
+
+    Route::delete('user/{id}', [AdminController::class,'userdestroy'])->name('user.destroy');
+
     Route::resource('admins', AdminController::class);
 
     Route::post('roles/fetch', [RoleController::class, 'fetch'])->name('roles.fetch');

@@ -29,13 +29,13 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('users.store') }}" method="POST">
+                            <form action="{{ route('user.store') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>User Name <span class="star-red">*</span></label>
-                                            <input class="form-control" name="name" type="text" value="{{ old('name') }}" placeholder="Enter Admin Name">
+                                            <input class="form-control" name="name" type="text" value="{{ old('name') }}" placeholder="Enter User Name">
                                         </div>
                                         @error('name')
                                             <p class='text-danger'>{{ $message }}</p>

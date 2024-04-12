@@ -27,7 +27,7 @@
                             <div class="col-md-6">
                                 <div class="page-header-btn">
                                     @haspermission('USER_CREATE', 'admin')
-                                        <a class="btn btn-primary" href="{{ route('users.create') }}">
+                                        <a class="btn btn-primary" href="{{ route('user.create') }}">
                                             <i class="feather-plus-circle"></i> Add User
                                         </a>
                                     @endhaspermission
@@ -86,7 +86,7 @@
 
             function delfun(id){
                 var userId = id;
-                var del = "{{ route('users.destroy', ':userId') }}";
+                var del = "{{ route('user.destroy', ':userId') }}";
                 del = del.replace(':userId', userId);
                 // console.log(del);
                 $('#del').attr('action', del);
@@ -142,7 +142,7 @@
 
                                 var html =  '<div class="table-btns">'+
                                                 '@haspermission('USER_UPDATE', 'admin')'+
-                                                    '<a class="btn edit-btn" href="{{ route('users.edit','+row.id+') }}"><i class="feather-edit"></i></a>'+
+                                                    '<a class="btn edit-btn" href="{{ route('user.edit','+row.id+') }}"><i class="feather-edit"></i></a>'+
                                                 '@endhaspermission'+
                                                 '@haspermission('USER_DELETE', 'admin')'+
                                                     '<a class="btn delete-btn" onclick="delfun('+row.id+')" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">'+
