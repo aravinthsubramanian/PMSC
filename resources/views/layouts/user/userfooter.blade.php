@@ -90,12 +90,12 @@
                         <ul class="row insta-row">
                             <li class="col-3 col-md-4">
                                 <a href="javascript:void(0);">
-                                    <img class="img-fluid" src="assets/img/services/service-01.jpg" alt="Instagram Image">
+                                    {{-- <img class="img-fluid" src="assets/img/services/service-01.jpg" alt="Instagram Image"> --}}
                                 </a>
                             </li>
                             <li class="col-3 col-md-4">
                                 <a href="javascript:void(0);">
-                                    <img class="img-fluid" src="assets/img/services/service-02.jpg" alt="Instagram Image">
+                                    {{-- <img class="img-fluid" src="assets/img/services/service-02.jpg" alt="Instagram Image"> --}}
                                 </a>
                             </li>
                             

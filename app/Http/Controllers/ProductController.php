@@ -33,7 +33,7 @@ class ProductController extends Controller
         // Page Length
         $pageNumber = ($request->start / $request->length) + 1;
         $pageLength = $request->length;
-        $skip       = ($pageNumber - 1) * $pageLength;
+        $skip = ($pageNumber - 1) * $pageLength;
 
         // Page Order
         $orderColumnIndex = $request->order[0]['column'] ?? '0';
@@ -48,9 +48,9 @@ class ProductController extends Controller
         //     ->select('*');
 
         $query = DB::table('main_categories')
-        ->join('sub_categories', 'sub_categories.main_category_id', '=', 'main_categories.id')
-        ->join('products', 'products.sub_category_id', '=', 'sub_categories.id')
-        ->select('*');
+            ->join('sub_categories', 'sub_categories.main_category_id', '=', 'main_categories.id')
+            ->join('products', 'products.sub_category_id', '=', 'sub_categories.id')
+            ->select('*');
 
 
         // Search
@@ -202,7 +202,8 @@ class ProductController extends Controller
         foreach ($all as $img) {
             $dbimg[$i++] = $img->id;
         }
-        if($request->oldimg){
+
+        if ($request->oldimg) {
             $oldimg = $request->oldimg;
             $deleted = array_diff($dbimg, $oldimg);
             foreach ($deleted as $id) {
@@ -210,11 +211,12 @@ class ProductController extends Controller
                 // dd($result);
                 $result->delete();
             }
-        }else{
-            $result = ProductImage::where('id', $product->id);
+        } else {
+            $result = ProductImage::where('product_id', $product->id)->get();
             // dd($result);
-            $result->delete();
+            $result->each->delete();
         }
+
 
 
         $product->product = $request->product;

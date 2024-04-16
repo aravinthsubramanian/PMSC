@@ -10,12 +10,20 @@
 <!-- Custom JS -->
 <script src="{{ asset('admin/assets/js/script.js') }}"></script>
 
+<!-- Ck Editor JS -->
+<script src="{{ asset('admin/assets/js/ckeditor.js') }}"></script>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+<!-- Jquery DataTable JS -->
+<script src="{{ asset('admin/assets/js/jquery.dataTables.min.js') }}"></script>
 
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<!-- DataTable JS -->
+<script src="{{ asset('admin/assets/js/dataTables.bootstrap4.min.js') }}"></script>
 
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+{{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script> --}}
+
+{{-- <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script> --}}
+
+{{-- <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script> --}}
 
 <script>
     function myFunction() {

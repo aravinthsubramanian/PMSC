@@ -112,7 +112,11 @@ php artisan jwt:secret
 output like below......
 (jwt-auth secret [ki85FHwQv4uXFmvhH4VhvSEzOrXs5nCX4d6iuqmaD8qWlotxYI5eGOFe7jRAT95L] set successfully.)
 
-### Mysql config in .env file:
+### Insatall stripe:
+
+composer require stripe/stripe-php
+
+### Config in .env file:
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -129,6 +133,24 @@ MAIL_PASSWORD= your gmail password #(password)
 MAIL_ENCRYPTION=ssl
 MAIL_FROM_ADDRESS= "your@gmail.com" #(same email)
 MAIL_FROM_NAME="PMSC"
+
+STRIPE_KEY=<your-stripe-key>
+STRIPE_SECRET=<your-stripe-secret>
+
+### Change the project name in resources/views/layouts/admin/adminafterimports.blade.php file:
+
+line 25 fetch(`/PMSC/public/api/categories/${categoryId}`) (Instead of 'PMSC' to your project name)
+
+### Change the project name in resources/views/payment/cart.blade.php file:
+
+line 188 fetch(`/PMSC/public/payments/editcart/${itemId}/${quantity}`) (Instead of 'PMSC' to your project name)
+line 204 fetch(`/PMSC/public/payments/editcart/${itemId}/${quantity}`) (Instead of 'PMSC' to your project name)
+
+### Change the project name in resources/views/payment/buy.blade.php file:
+
+line 177 var href = `/PMSC/public/payments/addcarts/${productid}/${quantity}`; (Instead of 'PMSC' to your project name)
+line 185 var href = `/PMSC/public/payments/addcarts/${productid}/${quantity}`; (Instead of 'PMSC' to your project name)
+line 197 var href = `/PMSC/public/payments/addcarts/${productid}/${quantity}`; (Instead of 'PMSC' to your project name)
 
 ### Clear the cache:
 

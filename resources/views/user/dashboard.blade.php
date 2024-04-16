@@ -17,11 +17,11 @@
 		<div class="breadcrumb-bar">
 			<div class="breadcrumb-img">
 				<div class="breadcrumb-left">
-					<img src="assets/img/bg/bg-09.png" alt="">
-				</div>
-				<div class="breadcrumb-right">
-					<img src="assets/img/bg/bg-08.png" alt="">
-				</div>
+                    <img src="{{asset('user\assets\img\bg\bg-09.png')}}" alt="">
+                </div>
+                <div class="breadcrumb-right">
+                    <img src="{{asset('user\assets\img\bg\bg-08.png')}}" alt="">
+                </div>
 			</div>
 			<div class="container">
 				<div class="row">

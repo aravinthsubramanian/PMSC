@@ -33,10 +33,13 @@
 
                 <ul class="main-nav">
                     <li>
-                        <a href="{{ route('users.dashboard') }}">Home</a>
+                        <a href="{{ route('users.dashboard') }}"><i class="feather-home me-1"></i>Home</a>
                     </li>
                     <li>
-                        <a href="{{ route('users.product') }}">Product</a>
+                        <a href="{{ route('users.product') }}"><i class="feather-shopping-bag me-1"></i>Product</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('payment.cart',Auth::User()->id) }}"><i class="feather-shopping-cart me-1"></i>My Cart</a>
                     </li>
                 </ul>
             </div>

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CommonController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -42,7 +42,24 @@ Route::middleware([UserAuth::class])->group(function () {
     Route::get('users/logout', [UserController::class, 'logout'])->name('users.logout');
     Route::get('users/dashboard', [UserController::class, 'dashboard'])->name('users.dashboard');
     Route::resource('users', UserController::class);
+
+    Route::get('payments/buy/{id}', [PaymentController::class,'buy'])->name('payment.buy');
+    Route::get('payments/cart', [PaymentController::class,'cart'])->name('payment.cart');
+    Route::get('payments/addcart/{id}', [PaymentController::class,'addcart'])->name('payment.addcart');
+    Route::get('payments/deletecart/{id}', [PaymentController::class,'deletecart'])->name('payment.deletecart');
+    Route::get('payments/addcarts/{id}/{qty}', [PaymentController::class,'addcarts'])->name('payment.addcarts');
+    Route::get('payments/editcart/{id}/{qty}', [PaymentController::class,'editcart'])->name('payment.editcart');
+    Route::post('/session', [PaymentController::class,'session'])->name('session');
+    Route::post('/sessioncart', [PaymentController::class,'sessioncart'])->name('sessioncart');
+    Route::get('/success', [PaymentController::class,'success'])->name('success');
 });
+
+
+
+
+
+
+
 
 
 Route::post('admins/login', [AdminController::class, 'login'])->name('admins.login');

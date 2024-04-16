@@ -39,8 +39,6 @@ class AdminController extends Controller
     }
 
 
-
-
     /**
      * Display a listing of the resource.
      */
@@ -433,7 +431,7 @@ class AdminController extends Controller
         return redirect()->to(route('users.loginoption'))->with('success', 'logout successfully!');
     }
 
-     /**
+    /**
      * Show the form for creating a new resource.
      */
     public function usercreate()
@@ -502,4 +500,5 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admins.users')->with('success', 'User deleted successfully');
     }
+
 }

@@ -22,7 +22,7 @@
             // Clear previous options in subcategory select
             subcategorySelect.innerHTML = '<option value="" selected></option>';
             // Fetch subcategories for the selected category
-            fetch(`/Acart/public/api/categories/${categoryId}`)
+            fetch(`/PMSC/public/api/categories/${categoryId}`)
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(subcategory => {
